@@ -6,6 +6,7 @@ package ecclient
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"sort"
@@ -145,6 +146,7 @@ func (ec *ecClient) put(ctx context.Context, limits []*pb.AddressedOrderLimit, p
 		}
 
 		if info.err != nil {
+			fmt.Printf("ERROR: %+v\n", info.err)
 			if !errs2.IsCanceled(info.err) {
 				failureCount++
 			} else {
