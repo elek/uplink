@@ -173,6 +173,7 @@ func (client *Download) Read(data []byte) (read int, err error) {
 					Amount:       client.allocated + newAllocation,
 				})
 				if err != nil {
+					fmt.Printf("%+v", err)
 					// we are signing so we shouldn't propagate this into close,
 					// however we should include this as a read error
 					client.unread.IncludeError(err)

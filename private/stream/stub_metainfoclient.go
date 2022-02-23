@@ -8,36 +8,36 @@ import (
 	"storj.io/drpc"
 )
 
-type metaInfoClientStub struct {
-	nodes stubNodes
+type MetaInfoClientStub struct {
+	Nodes stubNodes
 }
 
-func (m metaInfoClientStub) DRPCConn() drpc.Conn {
+func (m MetaInfoClientStub) DRPCConn() drpc.Conn {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) CreateBucket(ctx context.Context, in *pb.BucketCreateRequest) (*pb.BucketCreateResponse, error) {
+func (m MetaInfoClientStub) CreateBucket(ctx context.Context, in *pb.BucketCreateRequest) (*pb.BucketCreateResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) GetBucket(ctx context.Context, in *pb.BucketGetRequest) (*pb.BucketGetResponse, error) {
+func (m MetaInfoClientStub) GetBucket(ctx context.Context, in *pb.BucketGetRequest) (*pb.BucketGetResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) DeleteBucket(ctx context.Context, in *pb.BucketDeleteRequest) (*pb.BucketDeleteResponse, error) {
+func (m MetaInfoClientStub) DeleteBucket(ctx context.Context, in *pb.BucketDeleteRequest) (*pb.BucketDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) ListBuckets(ctx context.Context, in *pb.BucketListRequest) (*pb.BucketListResponse, error) {
+func (m MetaInfoClientStub) ListBuckets(ctx context.Context, in *pb.BucketListRequest) (*pb.BucketListResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) BeginObject(ctx context.Context, in *pb.ObjectBeginRequest) (*pb.ObjectBeginResponse, error) {
+func (m MetaInfoClientStub) BeginObject(ctx context.Context, in *pb.ObjectBeginRequest) (*pb.ObjectBeginResponse, error) {
 	fmt.Println("begin object")
 	return &pb.ObjectBeginResponse{
 		Bucket:        in.Bucket,
@@ -45,57 +45,57 @@ func (m metaInfoClientStub) BeginObject(ctx context.Context, in *pb.ObjectBeginR
 	}, nil
 }
 
-func (m metaInfoClientStub) CommitObject(ctx context.Context, in *pb.ObjectCommitRequest) (*pb.ObjectCommitResponse, error) {
+func (m MetaInfoClientStub) CommitObject(ctx context.Context, in *pb.ObjectCommitRequest) (*pb.ObjectCommitResponse, error) {
 	fmt.Println("commit object")
 	return &pb.ObjectCommitResponse{}, nil
 }
 
-func (m metaInfoClientStub) GetObject(ctx context.Context, in *pb.ObjectGetRequest) (*pb.ObjectGetResponse, error) {
+func (m MetaInfoClientStub) GetObject(ctx context.Context, in *pb.ObjectGetRequest) (*pb.ObjectGetResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) GetPendingObjects(ctx context.Context, in *pb.GetPendingObjectsRequest) (*pb.GetPendingObjectsResponse, error) {
+func (m MetaInfoClientStub) GetPendingObjects(ctx context.Context, in *pb.GetPendingObjectsRequest) (*pb.GetPendingObjectsResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) ListObjects(ctx context.Context, in *pb.ObjectListRequest) (*pb.ObjectListResponse, error) {
+func (m MetaInfoClientStub) ListObjects(ctx context.Context, in *pb.ObjectListRequest) (*pb.ObjectListResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) BeginDeleteObject(ctx context.Context, in *pb.ObjectBeginDeleteRequest) (*pb.ObjectBeginDeleteResponse, error) {
+func (m MetaInfoClientStub) BeginDeleteObject(ctx context.Context, in *pb.ObjectBeginDeleteRequest) (*pb.ObjectBeginDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) FinishDeleteObject(ctx context.Context, in *pb.ObjectFinishDeleteRequest) (*pb.ObjectFinishDeleteResponse, error) {
+func (m MetaInfoClientStub) FinishDeleteObject(ctx context.Context, in *pb.ObjectFinishDeleteRequest) (*pb.ObjectFinishDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) GetObjectIPs(ctx context.Context, in *pb.ObjectGetIPsRequest) (*pb.ObjectGetIPsResponse, error) {
+func (m MetaInfoClientStub) GetObjectIPs(ctx context.Context, in *pb.ObjectGetIPsRequest) (*pb.ObjectGetIPsResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) ListPendingObjectStreams(ctx context.Context, in *pb.ObjectListPendingStreamsRequest) (*pb.ObjectListPendingStreamsResponse, error) {
+func (m MetaInfoClientStub) ListPendingObjectStreams(ctx context.Context, in *pb.ObjectListPendingStreamsRequest) (*pb.ObjectListPendingStreamsResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) DownloadObject(ctx context.Context, in *pb.ObjectDownloadRequest) (*pb.ObjectDownloadResponse, error) {
+func (m MetaInfoClientStub) DownloadObject(ctx context.Context, in *pb.ObjectDownloadRequest) (*pb.ObjectDownloadResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) UpdateObjectMetadata(ctx context.Context, in *pb.ObjectUpdateMetadataRequest) (*pb.ObjectUpdateMetadataResponse, error) {
+func (m MetaInfoClientStub) UpdateObjectMetadata(ctx context.Context, in *pb.ObjectUpdateMetadataRequest) (*pb.ObjectUpdateMetadataResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) BeginSegment(ctx context.Context, in *pb.SegmentBeginRequest) (*pb.SegmentBeginResponse, error) {
+func (m MetaInfoClientStub) BeginSegment(ctx context.Context, in *pb.SegmentBeginRequest) (*pb.SegmentBeginResponse, error) {
 	fmt.Println("begin segment")
 	limits := []*pb.AddressedOrderLimit{}
 	for i := 0; i < 20; i++ {
@@ -105,7 +105,7 @@ func (m metaInfoClientStub) BeginSegment(ctx context.Context, in *pb.SegmentBegi
 			},
 			StorageNodeAddress: &pb.NodeAddress{
 				Transport: pb.NodeTransport_TCP_TLS_GRPC,
-				Address:   m.nodes[i].Address,
+				Address:   m.Nodes[i].Address,
 			},
 		})
 	}
@@ -129,43 +129,43 @@ func (m metaInfoClientStub) BeginSegment(ctx context.Context, in *pb.SegmentBegi
 	}, nil
 }
 
-func (m metaInfoClientStub) CommitSegment(ctx context.Context, in *pb.SegmentCommitRequest) (*pb.SegmentCommitResponse, error) {
+func (m MetaInfoClientStub) CommitSegment(ctx context.Context, in *pb.SegmentCommitRequest) (*pb.SegmentCommitResponse, error) {
 	return &pb.SegmentCommitResponse{
 		SuccessfulPieces: int32(len(in.UploadResult)),
 	}, nil
 }
 
-func (m metaInfoClientStub) MakeInlineSegment(ctx context.Context, in *pb.SegmentMakeInlineRequest) (*pb.SegmentMakeInlineResponse, error) {
+func (m MetaInfoClientStub) MakeInlineSegment(ctx context.Context, in *pb.SegmentMakeInlineRequest) (*pb.SegmentMakeInlineResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) BeginDeleteSegment(ctx context.Context, in *pb.SegmentBeginDeleteRequest) (*pb.SegmentBeginDeleteResponse, error) {
+func (m MetaInfoClientStub) BeginDeleteSegment(ctx context.Context, in *pb.SegmentBeginDeleteRequest) (*pb.SegmentBeginDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) FinishDeleteSegment(ctx context.Context, in *pb.SegmentFinishDeleteRequest) (*pb.SegmentFinishDeleteResponse, error) {
+func (m MetaInfoClientStub) FinishDeleteSegment(ctx context.Context, in *pb.SegmentFinishDeleteRequest) (*pb.SegmentFinishDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) ListSegments(ctx context.Context, in *pb.SegmentListRequest) (*pb.SegmentListResponse, error) {
+func (m MetaInfoClientStub) ListSegments(ctx context.Context, in *pb.SegmentListRequest) (*pb.SegmentListResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) DownloadSegment(ctx context.Context, in *pb.SegmentDownloadRequest) (*pb.SegmentDownloadResponse, error) {
+func (m MetaInfoClientStub) DownloadSegment(ctx context.Context, in *pb.SegmentDownloadRequest) (*pb.SegmentDownloadResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) DeletePart(ctx context.Context, in *pb.PartDeleteRequest) (*pb.PartDeleteResponse, error) {
+func (m MetaInfoClientStub) DeletePart(ctx context.Context, in *pb.PartDeleteRequest) (*pb.PartDeleteResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.BatchResponse, error) {
+func (m MetaInfoClientStub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb.BatchResponse, error) {
 	response := &pb.BatchResponse{
 		Responses: []*pb.BatchResponseItem{},
 	}
@@ -218,24 +218,24 @@ func (m metaInfoClientStub) Batch(ctx context.Context, in *pb.BatchRequest) (*pb
 	return response, nil
 }
 
-func (m metaInfoClientStub) ProjectInfo(ctx context.Context, in *pb.ProjectInfoRequest) (*pb.ProjectInfoResponse, error) {
+func (m MetaInfoClientStub) ProjectInfo(ctx context.Context, in *pb.ProjectInfoRequest) (*pb.ProjectInfoResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) RevokeAPIKey(ctx context.Context, in *pb.RevokeAPIKeyRequest) (*pb.RevokeAPIKeyResponse, error) {
+func (m MetaInfoClientStub) RevokeAPIKey(ctx context.Context, in *pb.RevokeAPIKeyRequest) (*pb.RevokeAPIKeyResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) BeginMoveObject(ctx context.Context, in *pb.ObjectBeginMoveRequest) (*pb.ObjectBeginMoveResponse, error) {
+func (m MetaInfoClientStub) BeginMoveObject(ctx context.Context, in *pb.ObjectBeginMoveRequest) (*pb.ObjectBeginMoveResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m metaInfoClientStub) FinishMoveObject(ctx context.Context, in *pb.ObjectFinishMoveRequest) (*pb.ObjectFinishMoveResponse, error) {
+func (m MetaInfoClientStub) FinishMoveObject(ctx context.Context, in *pb.ObjectFinishMoveRequest) (*pb.ObjectFinishMoveResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-var _ pb.DRPCMetainfoClient = &metaInfoClientStub{}
+var _ pb.DRPCMetainfoClient = &MetaInfoClientStub{}

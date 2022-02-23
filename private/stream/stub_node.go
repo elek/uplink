@@ -12,7 +12,7 @@ import (
 
 type stubNodes []*nodeStub
 
-func newStubNodes(size int) (stubNodes, error) {
+func NewStubNodes(size int) (stubNodes, error) {
 	result := stubNodes{}
 	for i := 0; i < size; i++ {
 		node, err := NewNodeStub(int8(i))
@@ -36,6 +36,7 @@ func (n stubNodes) GetByAddress(address string) (*nodeStub, error) {
 type nodeStub struct {
 	Address  string
 	Identity *identity.FullIdentity
+	Index    int8
 }
 
 func NewNodeStub(index int8) (*nodeStub, error) {
@@ -46,14 +47,25 @@ func NewNodeStub(index int8) (*nodeStub, error) {
 	return &nodeStub{
 		Address:  fmt.Sprintf("10.10.10.%d:1234", index),
 		Identity: otherIdentity,
+		Index:    index,
 	}, nil
 }
 
-func (n *nodeStub) CreateConnection() (drpc.Conn, *tls.ConnectionState, error) {
-	return NewPieceStoreStub(n), &tls.ConnectionState{
+func (n *nodeStub) CreateUploadConnection() (drpc.Conn, *tls.ConnectionState, error) {
+	return NewPieceStoreUploadStub(n), &tls.ConnectionState{
 		PeerCertificates: []*x509.Certificate{
 			n.Identity.Leaf,
 			n.Identity.CA,
 		},
 	}, nil
+}
+
+func (n *nodeStub) CreateDownloadConnection(pieceTemplate []byte) (drpc.Conn, *tls.ConnectionState, error) {
+	stub, err := NewPieceStoreDownloadStub(n, pieceTemplate)
+	return stub, &tls.ConnectionState{
+		PeerCertificates: []*x509.Certificate{
+			n.Identity.Leaf,
+			n.Identity.CA,
+		},
+	}, err
 }

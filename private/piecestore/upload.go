@@ -5,9 +5,17 @@ package piecestore
 
 import (
 	"context"
+	"encoding/hex"
 	"errors"
-	"hash"
+	"fmt"
+	"github.com/minio/highwayhash"
+	"github.com/zeebo/blake3"
+	"github.com/zeebo/xxh3"
+	h "hash"
 	"io"
+	"os"
+	"storj.io/common/pkcrypto"
+	"strings"
 	"time"
 
 	"github.com/spacemonkeygo/monkit/v3"
@@ -16,7 +24,6 @@ import (
 	"storj.io/common/context2"
 	"storj.io/common/identity"
 	"storj.io/common/pb"
-	"storj.io/common/pkcrypto"
 	"storj.io/common/signing"
 	"storj.io/common/storj"
 	"storj.io/common/sync2"
@@ -32,7 +39,7 @@ type upload struct {
 	peer       *identity.PeerIdentity
 	stream     uploadStream
 
-	hash           hash.Hash // TODO: use concrete implementation
+	hash           h.Hash // TODO: use concrete implementation
 	offset         int64
 	allocationStep int64
 
@@ -87,13 +94,34 @@ func (client *Client) UploadReader(ctx context.Context, limit *pb.OrderLimit, pi
 		return nil, err
 	}
 
+	var hasher h.Hash
+	switch strings.ToLower(os.Getenv("STORJ_HASH")) {
+	case "blake":
+		hasher = blake3.New()
+	case "highway":
+		key, err := hex.DecodeString("000102030405060708090A0B0C0D0E0FF0E0D0C0B0A090807060504030201000") // use your own key here
+		if err != nil {
+			panic(err)
+		}
+		hasher, err = highwayhash.New(key)
+		if err != nil {
+			panic(err)
+		}
+	case "xxh3":
+		hasher = xxh3.New()
+	case "", "default":
+		hasher = pkcrypto.NewHash()
+	default:
+		return nil, fmt.Errorf("Unknown hash algorithm %s, use blake,highway,default or xxh3", os.Getenv("STORJ_HASH"))
+	}
+
 	upload := &upload{
 		client:         client,
 		limit:          limit,
 		privateKey:     piecePrivateKey,
 		peer:           peer,
 		stream:         stream,
-		hash:           pkcrypto.NewHash(),
+		hash:           hasher,
 		offset:         0,
 		allocationStep: client.config.InitialStep,
 	}
@@ -113,7 +141,9 @@ func (client *upload) write(ctx context.Context, data io.Reader) (hash *pb.Piece
 	}()
 
 	// write the hash of the data sent to the server
-	data = io.TeeReader(data, client.hash)
+	if strings.ToLower(os.Getenv("STORJ_HASH")) != "none" {
+		data = io.TeeReader(data, client.hash)
+	}
 
 	backingArray := make([]byte, client.client.config.MaximumStep)
 

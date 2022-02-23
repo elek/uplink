@@ -35,3 +35,5 @@ resource.syso
 
 *.resource.go
 /.build/
+
+*.pprof
