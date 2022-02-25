@@ -5,6 +5,7 @@ package eestream
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -225,6 +226,7 @@ func (ep *encodedPiece) Read(p []byte) (n int, err error) {
 	}
 
 	// we have some buffer remaining for this piece. write it to the output
+	fmt.Printf("%d-%d\n", len(ep.shareBuf), ep.available)
 	off := len(ep.shareBuf) - ep.available
 	n = copy(p, ep.shareBuf[off:])
 	ep.available -= n

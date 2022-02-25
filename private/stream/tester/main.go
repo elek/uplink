@@ -4,8 +4,11 @@ import (
 	"context"
 	"crypto/tls"
 	"github.com/pkg/profile"
+	"io/ioutil"
 	"log"
+	"os"
 	"storj.io/common/encryption"
+	"storj.io/common/fpath"
 	"storj.io/common/identity/testidentity"
 	"storj.io/common/macaroon"
 	"storj.io/common/peertls/tlsopts"
@@ -20,7 +23,13 @@ import (
 )
 
 func main() {
-	defer profile.Start().Stop()
+	hashType := os.Getenv("STORJ_HASH")
+	if hashType == "" {
+		hashType = "default"
+	}
+	tmpDir, _ := ioutil.TempDir("", "uplink-"+hashType+"-*")
+
+	defer profile.Start(profile.ProfilePath(tmpDir)).Stop()
 	err := run()
 	if err != nil {
 		log.Fatalf("%+v", err)
@@ -28,11 +37,13 @@ func main() {
 }
 
 func run() error {
+
 	nodes, err := stream.NewStubNodes(20)
 	if err != nil {
 		return err
 	}
-	ctx := rpcpool.WithDialerWrapper(context.Background(), func(ctx context.Context, address string, dialer rpcpool.Dialer) rpcpool.Dialer {
+
+	ctx := rpcpool.WithDialerWrapper(fpath.WithTempData(context.Background(), "", true), func(ctx context.Context, address string, dialer rpcpool.Dialer) rpcpool.Dialer {
 		return func(context.Context) (drpc.Conn, *tls.ConnectionState, error) {
 			node, err := nodes.GetByAddress(address)
 			if err != nil {

@@ -96,7 +96,6 @@ func (m MetaInfoClientStub) UpdateObjectMetadata(ctx context.Context, in *pb.Obj
 }
 
 func (m MetaInfoClientStub) BeginSegment(ctx context.Context, in *pb.SegmentBeginRequest) (*pb.SegmentBeginResponse, error) {
-	fmt.Println("begin segment")
 	limits := []*pb.AddressedOrderLimit{}
 	for i := 0; i < 20; i++ {
 		limits = append(limits, &pb.AddressedOrderLimit{

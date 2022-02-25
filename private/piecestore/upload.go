@@ -109,7 +109,7 @@ func (client *Client) UploadReader(ctx context.Context, limit *pb.OrderLimit, pi
 		}
 	case "xxh3":
 		hasher = xxh3.New()
-	case "", "default":
+	case "", "default", "none":
 		hasher = pkcrypto.NewHash()
 	default:
 		return nil, fmt.Errorf("Unknown hash algorithm %s, use blake,highway,default or xxh3", os.Getenv("STORJ_HASH"))

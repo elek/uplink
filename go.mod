@@ -33,4 +33,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
-replace storj.io/common => ../common
+replace storj.io/common => github.com/elek/common v0.0.0-20220218110455-a57e24c309f4
