@@ -250,7 +250,7 @@ func (client *upload) commit(ctx context.Context) (_ *pb.PieceHash, err error) {
 	}
 
 	// verification
-	verifyErr := client.client.VerifyPieceHash(ctx, client.peer, client.limit, response.Done, uplinkHash.Hash)
+	verifyErr := VerifyPieceHash(ctx, client.peer, client.limit, response.Done, uplinkHash.Hash)
 
 	// combine all the errors from before
 	// sendErr is io.EOF when we failed to send

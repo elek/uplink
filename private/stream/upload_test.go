@@ -69,11 +69,13 @@ func TestUpload(t *testing.T) {
 		err = upload.Close()
 		require.NoError(t, err)
 	}()
-	bytes := make([]byte, 20000)
-	for i := 0; i < 20000; i++ {
+
+	bytes := make([]byte, 10224)
+	for i := 0; i < 10224; i++ {
 		bytes[i] = 12
 	}
-	for i := 0; i < 1_000_000; i++ {
+	max := 1_000_000
+	for i := 0; i < max; i++ {
 		_, err = upload.Write(bytes)
 		require.NoError(t, err)
 	}
