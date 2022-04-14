@@ -6,10 +6,13 @@ package ecclient
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"sort"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -44,13 +47,33 @@ type ecClient struct {
 	dialer              rpc.Dialer
 	memoryLimit         int
 	forceErrorDetection bool
+	hashAlgorithm       pb.PieceHashAlgorithm
 }
 
 // New creates a client from the given dialer and max buffer memory.
 func New(dialer rpc.Dialer, memoryLimit int) Client {
+
+	algo := pb.PieceHashAlgorithm_SHA256
+
+	// Experimental!!!
+	algorithmOverride := os.Getenv("STORJ_PIECE_HASH_ALGORITHM")
+	if algorithmOverride != "" {
+		found := false
+		for k, v := range pb.PieceHashAlgorithm_value {
+			if strings.ToUpper(algorithmOverride) == k {
+				algo = pb.PieceHashAlgorithm(v)
+				found = true
+			}
+		}
+		if !found {
+			fmt.Printf("STORJ_PIECE_HASH_ALGORITHM is set but the algorithm is not registered in the code: %s", algorithmOverride)
+		}
+	}
+
 	return &ecClient{
-		dialer:      dialer,
-		memoryLimit: memoryLimit,
+		dialer:        dialer,
+		memoryLimit:   memoryLimit,
+		hashAlgorithm: algo,
 	}
 }
 
@@ -60,7 +83,7 @@ func (ec *ecClient) WithForceErrorDetection(force bool) Client {
 }
 
 func (ec *ecClient) dialPiecestore(ctx context.Context, n storj.NodeURL) (*piecestore.Client, error) {
-	return piecestore.Dial(ctx, ec.dialer, n, piecestore.DefaultConfig)
+	return piecestore.Dial(ctx, ec.dialer, n, piecestore.DefaultConfig, ec.hashAlgorithm)
 }
 
 func (ec *ecClient) PutSingleResult(ctx context.Context, limits []*pb.AddressedOrderLimit, privateKey storj.PiecePrivateKey, rs eestream.RedundancyStrategy, data io.Reader) (results []*pb.SegmentPieceUploadResult, err error) {
@@ -145,6 +168,7 @@ func (ec *ecClient) put(ctx context.Context, limits []*pb.AddressedOrderLimit, p
 		}
 
 		if info.err != nil {
+			fmt.Printf("ERROR: %+v\n", info.err)
 			if !errs2.IsCanceled(info.err) {
 				failureCount++
 			} else {

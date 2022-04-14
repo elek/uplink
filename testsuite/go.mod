@@ -51,6 +51,7 @@ require (
 	github.com/jackc/pgx/v4 v4.13.0 // indirect
 	github.com/jtolds/monkit-hw/v2 v2.0.0-20191108235325-141a0da276b3 // indirect
 	github.com/jtolds/tracetagger/v2 v2.0.0-rc5 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
 	github.com/lucas-clemente/quic-go v0.25.0 // indirect
 	github.com/marten-seemann/qtls-go1-16 v0.1.4 // indirect
 	github.com/marten-seemann/qtls-go1-17 v0.1.0 // indirect
@@ -74,6 +75,7 @@ require (
 	github.com/zeebo/admission/v3 v3.0.3 // indirect
 	github.com/zeebo/float16 v0.1.0 // indirect
 	github.com/zeebo/incenc v0.0.0-20180505221441-0d92902eec54 // indirect
+	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect
 	go.opentelemetry.io/otel v0.18.0 // indirect
 	go.opentelemetry.io/otel/metric v0.18.0 // indirect
@@ -96,3 +98,5 @@ require (
 	storj.io/monkit-jaeger v0.0.0-20220131130547-dc4cb5a0d97a // indirect
 	storj.io/private v0.0.0-20220323114243-08c4b5e752f4 // indirect
 )
+
+replace storj.io/common => ../../common

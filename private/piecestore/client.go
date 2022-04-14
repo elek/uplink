@@ -54,22 +54,24 @@ var DefaultConfig = Config{
 
 // Client implements uploading, downloading and deleting content from a piecestore.
 type Client struct {
-	client pb.DRPCPiecestoreClient
-	conn   *rpc.Conn
-	config Config
+	client             pb.DRPCPiecestoreClient
+	conn               *rpc.Conn
+	config             Config
+	pieceHashAlgorithm pb.PieceHashAlgorithm
 }
 
 // Dial dials the target piecestore endpoint.
-func Dial(ctx context.Context, dialer rpc.Dialer, nodeURL storj.NodeURL, config Config) (*Client, error) {
+func Dial(ctx context.Context, dialer rpc.Dialer, nodeURL storj.NodeURL, config Config, pieceHashAlgorithm pb.PieceHashAlgorithm) (*Client, error) {
 	conn, err := dialer.DialNodeURL(ctx, nodeURL)
 	if err != nil {
 		return nil, Error.Wrap(err)
 	}
 
 	return &Client{
-		client: pb.NewDRPCPiecestoreClient(conn),
-		conn:   conn,
-		config: config,
+		client:             pb.NewDRPCPiecestoreClient(conn),
+		conn:               conn,
+		config:             config,
+		pieceHashAlgorithm: pieceHashAlgorithm,
 	}, nil
 }
 

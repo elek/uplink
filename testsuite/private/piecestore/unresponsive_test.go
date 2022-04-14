@@ -178,7 +178,7 @@ func TestUnresponsiveStoragenode(t *testing.T) {
 		require.NoError(t, err)
 
 		start := time.Now()
-		_, err = client.UploadReader(ctx, &pb.OrderLimit{}, privateKey, bytes.NewBuffer([]byte{1, 2, 3, 4}))
+		_, err = client.UploadReader(ctx, &pb.OrderLimit{}, privateKey, bytes.NewBuffer([]byte{1, 2, 3, 4}), pb.PieceHashAlgorithm_SHA256)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "message timeout")
 		duration := time.Since(start)
