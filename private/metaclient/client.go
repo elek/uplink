@@ -457,6 +457,7 @@ func (params *CommitObjectParams) BatchItem() *pb.BatchRequestItem {
 
 // CommitObject commits a created object.
 func (client *Client) CommitObject(ctx context.Context, params CommitObjectParams) (err error) {
+	return nil
 	defer mon.Task()(&ctx)(&err)
 
 	err = WithRetry(ctx, func(ctx context.Context) error {
@@ -1087,6 +1088,7 @@ func (params *CommitSegmentParams) BatchItem() *pb.BatchRequestItem {
 
 // CommitSegment commits an uploaded segment.
 func (client *Client) CommitSegment(ctx context.Context, params CommitSegmentParams) (err error) {
+	return nil
 	defer mon.Task()(&ctx)(&err)
 
 	err = WithRetry(ctx, func(ctx context.Context) error {
@@ -1460,9 +1462,15 @@ func (r RevokeAPIKeyParams) toRequest(header *pb.RequestHeader) *pb.RevokeAPIKey
 func (client *Client) Batch(ctx context.Context, requests ...BatchItem) (resp []BatchResponse, err error) {
 	defer mon.Task()(&ctx)(&err)
 
-	batchItems := make([]*pb.BatchRequestItem, len(requests))
-	for i, request := range requests {
-		batchItems[i] = request.BatchItem()
+	batchItems := make([]*pb.BatchRequestItem, 0)
+	for _, request := range requests {
+		switch request.(type) {
+		case *CommitObjectParams, *CommitSegmentParams:
+			//skip
+		default:
+			batchItems = append(batchItems, request.BatchItem())
+		}
+
 	}
 	response, err := client.client.Batch(ctx, &pb.BatchRequest{
 		Header:   client.header(),
