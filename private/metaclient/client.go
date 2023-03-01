@@ -1282,6 +1282,7 @@ func (streamRange StreamRange) Normalize(plainSize int64) StreamRange {
 
 func (params *DownloadObjectParams) toRequest(header *pb.RequestHeader) *pb.ObjectDownloadRequest {
 	return &pb.ObjectDownloadRequest{
+		DesiredNodes:       80,
 		Header:             header,
 		Bucket:             params.Bucket,
 		EncryptedObjectKey: params.EncryptedObjectKey,
@@ -1344,8 +1345,9 @@ type DownloadSegmentParams struct {
 
 func (params *DownloadSegmentParams) toRequest(header *pb.RequestHeader) *pb.SegmentDownloadRequest {
 	return &pb.SegmentDownloadRequest{
-		Header:   header,
-		StreamId: params.StreamID,
+		Header:       header,
+		StreamId:     params.StreamID,
+		DesiredNodes: 80,
 		CursorPosition: &pb.SegmentPosition{
 			PartNumber: params.Position.PartNumber,
 			Index:      params.Position.Index,
