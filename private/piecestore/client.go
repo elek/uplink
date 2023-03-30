@@ -49,8 +49,8 @@ type Config struct {
 var DefaultConfig = Config{
 	DownloadBufferSize: 256 * memory.KiB.Int64(),
 
-	InitialStep: 64 * memory.KiB.Int64(),
-	MaximumStep: 256 * memory.KiB.Int64(),
+	InitialStep: 256 * memory.KiB.Int64(),
+	MaximumStep: 1024 * memory.KiB.Int64(),
 
 	MessageTimeout: 10 * time.Minute,
 }
