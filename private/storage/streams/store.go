@@ -882,6 +882,10 @@ func (s *Store) Ranger(ctx context.Context, response metaclient.DownloadSegmentW
 	}
 
 	needed := info.RedundancyScheme.DownloadNodes()
+	override := metaclient.GetDownloadNodesExperimental()
+	if int32(override) > needed {
+		needed = int32(override)
+	}
 	selected := make([]*pb.AddressedOrderLimit, len(limits))
 	s.rngMu.Lock()
 	perm := s.rng.Perm(len(limits))

@@ -6,6 +6,8 @@ package metaclient
 import (
 	"bytes"
 	"context"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -1281,12 +1283,29 @@ func (streamRange StreamRange) Normalize(plainSize int64) StreamRange {
 }
 
 func (params *DownloadObjectParams) toRequest(header *pb.RequestHeader) *pb.ObjectDownloadRequest {
-	return &pb.ObjectDownloadRequest{
+	odr := &pb.ObjectDownloadRequest{
 		Header:             header,
 		Bucket:             params.Bucket,
 		EncryptedObjectKey: params.EncryptedObjectKey,
 		Range:              params.Range.toProto(),
 	}
+	nodes := GetDownloadNodesExperimental()
+	if nodes > 0 {
+		odr.DesiredNodes = int32(nodes)
+	}
+	return odr
+}
+
+func GetDownloadNodesExperimental() int {
+	nodes := os.Getenv("STORJ_DOWNLOAD_NODES_EXPERIMENTAL")
+	if nodes == "" {
+		return 0
+	}
+	ni, err := strconv.Atoi(nodes)
+	if err != nil {
+		panic(err)
+	}
+	return ni
 }
 
 // BatchItem returns single item for batch request.
